@@ -3,10 +3,12 @@ from fastapi import FastAPI
 from database import engine, Base
 from app.routers import empresa
 
-Base.metadata.drop_all(bind=engine)
-Base.metadata.create_all(bind=engine)
-
 app = FastAPI()
+
+@app.on_event("startup")
+def on_startup() -> None:
+    """Create database tables if they do not exist."""
+    Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def check_api():
