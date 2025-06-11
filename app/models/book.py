@@ -28,3 +28,5 @@ class BookCopy(Base):
     is_available = Column(Boolean, default=True)
 
     book = relationship("Book", back_populates="copies")
+    # Relationship for Borrow model
+    borrows = relationship("Borrow", back_populates="book_copy", lazy="dynamic")
