@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.orm import relationship # Make sure this is present
 from sqlalchemy.sql import func
 from database import Base
 
@@ -15,6 +16,10 @@ class User(Base):
 
     # Polymorphic identity
     user_type = Column(String(50))
+
+    # Relationships for Borrow model
+    borrowed_items = relationship("Borrow", foreign_keys="Borrow.borrower_id", back_populates="borrower", lazy="dynamic")
+    processed_loans = relationship("Borrow", foreign_keys="Borrow.lender_id", back_populates="lender", lazy="dynamic")
 
     __mapper_args__ = {
         'polymorphic_identity': 'user',
